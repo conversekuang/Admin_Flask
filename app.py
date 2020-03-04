@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
+def index():
     return render_template("index.html")
 
 
@@ -22,9 +22,24 @@ def login():
         # return render_template("index.html")
 
 
+@app.route('/schoolBus')
+def school_bus():
+    return render_template("school_bus.html")
+
+
+@app.route('/commuteBus')
+def commute_bus():
+    return render_template("commute_bus.html")
+
+
+@app.route('/update_info', methods=['GET'])
+def update_info():
+    return render_template("update_info.html")
+
+
 @app.route('/logout', methods=['GET'])
 def logout():
-    pass
+    return render_template("school_bus.html")
 
 
 if __name__ == '__main__':
