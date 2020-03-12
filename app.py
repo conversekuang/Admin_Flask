@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
+import json
 
 app = Flask(__name__)
 
@@ -40,6 +41,23 @@ def update_info():
 @app.route('/logout', methods=['GET'])
 def logout():
     return render_template("school_bus.html")
+
+
+@app.route('/date_check', methods=['POST'])
+def date_check():
+    """
+    bootstrap的时间选择器
+    https://www.bootcss.com/p/bootstrap-datetimepicker/
+    :return:
+    """
+    data = json.loads(request.get_data(as_text=True))
+    print(data)
+    return jsonify({'code': 200, 'message': ''})
+    # return data['test']
+    # password = request.args['password']
+    # print(username, password)
+    # return 201
+    # return render_template("index.html")
 
 
 if __name__ == '__main__':
