@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+          rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.22.0/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <title></title>
+    <style type="text/css">
+        .myrow {
+            display: flex;
+            flex-direction: row;
+            /*margin-left:1em;*/
+        }
+
+        .xxxx {
+            height: 2px;
+            background: #999999;
+            margin-top: 16px;
+            width: 2em;
+            margin-left: 1em;
+            margin-right: 1em;
+        }
+    </style>
+</head>
+
+<body>
+<div class="form-group ">
+    <label for="name">选择日期</label>
+    <div class="myrow">
+
+        <div class='input-group date' style="width: 14em;" id='datetimepicker1'>
+            <input id='start_date' type='text' class="timeInput form-control"/>
+            <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+					</span>
+        </div>
+        <div class="xxxx">
+
+        </div>
+        <div class='input-group date' style="width: 14em;" id='datetimepicker2'>
+            <input id='end_date' type='text' class="timeInput form-control"/>
+            <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+					</span>
+        </div>
+        <div>
+            <button id="button1" class="btn btn-primary" style="margin-left: 10px">提交</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#form1').hide();
+        var picker1 = $('#datetimepicker1').datetimepicker({
+            format: 'YYYY-MM-DD',
+            locale: moment.locale('zh-cn'),
+            //minDate: '2016-7-1'
+        });
+        var picker2 = $('#datetimepicker2').datetimepicker({
+            format: 'YYYY-MM-DD',
+            locale: moment.locale('zh-cn')
+        });
+        //动态设置最小值
+        picker1.on('dp.change', function (e) {
+            picker2.data('DateTimePicker').minDate(e.date);
+        });
+        //动态设置最大值
+        picker2.on('dp.change', function (e) {
+            picker1.data('DateTimePicker').maxDate(e.date);
+        });
+    });
+
+    $('#datetimepicker1').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn')
+        //defaultDate: "2020-1-1",
+        //todayHighlight:true
+    });
+
+    $('#datetimepicker2').datetimepicker({
+        format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn')
+        //defaultDate: "2020-12-1",
+        //todayHighlight:true
+    });
+
+    $('#button1').click(function () {
+
+        //alert("已经提交" + $('#start_date').val() + $('#end_date').val());
+        $.ajax({
+            url: " http://127.0.0.1:5000/date_check",
+            type: "post",
+            dataType: "json",
+            data: JSON.stringify({"start": $('#start_date').val(), "end": $('#end_date').val()}),
+            success: function (result) {
+                    alert("提交成功"+result);
+            },
+            error: function () {
+                alert("异常!!!");
+            }
+        })
+    });
+
+
+</script>
+</body>
+
+
+</html>
