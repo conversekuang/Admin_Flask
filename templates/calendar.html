@@ -69,16 +69,25 @@
                 <!-- end row -->
 
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
                         <div class="card mb-3">
                             <div class="card-header">
-                                <h3><i class="fa fa-calendar"></i> Date Range Picker</h3>
-                                The Date Range Picker is attached to a text input. It will use the current value of the
-                                input to initialize, and update the input if new dates are chosen.
+                                <h3><i class="fa fa-calendar"></i> 选择订单导出类型和日期</h3>
+                                乘客类型是：对应后台中学号后缀，例如:0A 一中实验，0D 三十六所<br>
+                                日期是：需要导出订单的
                             </div>
 
                             <div class="card-body">
+                                    请选择导出乘车类型
                                 <div class="form-group ">
+
+                                    <div class="myrow">
+                                        <input id='passager_type' type='text' class="timeInput form-control"
+                                               placeholder="例如: 0A"/>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    请选择时间段
 
                                     <div class="myrow">
                                         <div class='input-group date' style="width: 14em;" id='datetimepicker1'>
@@ -117,7 +126,6 @@
                                 <br>
                                 <br>
                                 <br>
-
 
                             </div>
                         </div><!-- end card-->
@@ -208,9 +216,14 @@
                 url: " http://127.0.0.1:5000/date_check",
                 type: "post",
                 dataType: "json",
-                data: JSON.stringify({"start": $('#start_date').val(), "end": $('#end_date').val()}),
+                data: JSON.stringify({
+                    "passager_type": $('#passager_type').val(),
+                    "start": $('#start_date').val(),
+                    "end": $('#end_date').val()
+                }),
                 success: function (result) {
                     alert("提交成功" + result);
+
                 },
                 error: function () {
                     alert("异常!!!");

@@ -50,11 +50,25 @@ def date_check():
     https://www.bootcss.com/p/bootstrap-datetimepicker/
     :return:
     """
-    data = json.loads(request.get_data(as_text=True))
+    data = json.loads(request.get_data())
     print(data)
-    print(request.headers)
+
+    # TODO 提取数据出来
+    passager_type = data['passager_type']
+
+    # 传入乘客类型 string 类型
+    passager_type = "{} {}".format(passager_type.upper(), passager_type.lower())
+    print(passager_type)  # 大小写均可
+
+    # 传入日期 int 类型
+    start_date = int(data['start'].replace("-", ""))
+    end_date = int(data['end'].replace('-', ""))
+    print(start_date, end_date)
+
+    # TODO 返回导出文件
     response = make_response(jsonify({'code': 200, 'message': ''}))
     response.headers['Access-Control-Allow-Origin'] = '*'
+    # 保证了跨域不出错
 
     return response
 
