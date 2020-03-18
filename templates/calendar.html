@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
+{% block head %}
+    {{ super() }}
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
           rel="stylesheet">
@@ -29,89 +28,196 @@
             margin-right: 1em;
         }
     </style>
-</head>
+{% endblock %}
 
-<body>
-<div class="form-group ">
-    <label for="name">选择日期</label>
-    <div class="myrow">
+{% block content %}
 
-        <div class='input-group date' style="width: 14em;" id='datetimepicker1'>
-            <input id='start_date' type='text' class="timeInput form-control"/>
-            <span class="input-group-addon">
+    {{ super() }}
+
+    <div class="content-page">
+
+        <!-- Start content -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+
+                            <h1 class="main-title float-left">日期查询</h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item">Home</li>
+                                <li class="breadcrumb-item active">Tooltips and Popovers</li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <div class="alert alert-success" role="alert">
+                                <label for="name">选择日期</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h3><i class="fa fa-calendar"></i> Date Range Picker</h3>
+                                The Date Range Picker is attached to a text input. It will use the current value of the
+                                input to initialize, and update the input if new dates are chosen.
+                            </div>
+
+                            <div class="card-body">
+                                <div class="form-group ">
+
+                                    <div class="myrow">
+                                        <div class='input-group date' style="width: 14em;" id='datetimepicker1'>
+                                            <input id='start_date' type='text' class="timeInput form-control"/>
+                                            <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
 					</span>
-        </div>
-        <div class="xxxx">
+                                        </div>
+                                        <div class="xxxx">
 
-        </div>
-        <div class='input-group date' style="width: 14em;" id='datetimepicker2'>
-            <input id='end_date' type='text' class="timeInput form-control"/>
-            <span class="input-group-addon">
+                                        </div>
+                                        <div class='input-group date' style="width: 14em;" id='datetimepicker2'>
+                                            <input id='end_date' type='text' class="timeInput form-control"/>
+                                            <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
 					</span>
-        </div>
-        <div>
-            <button id="button1" class="btn btn-primary" style="margin-left: 10px">提交</button>
-        </div>
+                                        </div>
+                                        <div>
+                                            <button id="button1" class="btn btn-primary" style="margin-left: 10px">提交
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+
+
+                            </div>
+                        </div><!-- end card-->
+                    </div>
+
+
+                </div>
+
+
+            </div><!-- END container-fluid -->
+        </div><!-- END content -->
+
     </div>
-</div>
-<script>
-    $(function () {
-        $('#form1').hide();
-        var picker1 = $('#datetimepicker1').datetimepicker({
+
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for("static",filename="assets/js/modernizr.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="assets/js/moment.min.js") }}"></script>
+
+    <script src="{{ url_for("static",filename="assets/js/popper.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="assets/js/bootstrap.min.js") }}"></script>
+
+    <script src="{{ url_for("static",filename="assets/js/detect.js") }}"></script>
+    <script src="{{ url_for("static",filename="assets/js/fastclick.js") }}"></script>
+    <script src="{{ url_for("static",filename="assets/js/jquery.blockUI.js") }}"></script>
+    <script src="{{ url_for("static",filename="assets/js/jquery.nicescroll.js") }}"></script>
+
+    <!-- App js -->
+    <script src="{{ url_for("static",filename="assets/js/pikeadmin.js") }}"></script>
+
+    <!-- BEGIN Java Script for this page -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Counter-Up-->
+    <script src="{{ url_for("static",filename="assets/plugins/waypoints/lib/jquery.waypoints.min.js") }}"></script>
+    <script src="{{ url_for("static",filename="assets/plugins/counterup/jquery.counterup.min.js") }}"></script>
+    <script>
+        $(function () {
+            $('#form1').hide();
+            var picker1 = $('#datetimepicker1').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn'),
+                //minDate: '2016-7-1'
+            });
+            var picker2 = $('#datetimepicker2').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn')
+            });
+            //动态设置最小值
+            picker1.on('dp.change', function (e) {
+                picker2.data('DateTimePicker').minDate(e.date);
+            });
+            //动态设置最大值
+            picker2.on('dp.change', function (e) {
+                picker1.data('DateTimePicker').maxDate(e.date);
+            });
+        });
+
+        $('#datetimepicker1').datetimepicker({
             format: 'YYYY-MM-DD',
             locale: moment.locale('zh-cn'),
-            //minDate: '2016-7-1'
+            defaultDate: new Date(),
+            //todayHighlight:true
+            //todayBtn: true,
+            //autoclose: true,
         });
-        var picker2 = $('#datetimepicker2').datetimepicker({
+
+        $('#datetimepicker2').datetimepicker({
             format: 'YYYY-MM-DD',
-            locale: moment.locale('zh-cn')
+            locale: moment.locale('zh-cn'),
+            defaultDate: new Date(),
+            //todayHighlight:true
+            //todayBtn: true,
+            //autoclose: true,
         });
-        //动态设置最小值
-        picker1.on('dp.change', function (e) {
-            picker2.data('DateTimePicker').minDate(e.date);
+
+        $('#button1').click(function () {
+
+            //alert("已经提交" + $('#start_date').val() + $('#end_date').val());
+            $.ajax({
+                url: " http://127.0.0.1:5000/date_check",
+                type: "post",
+                dataType: "json",
+                data: JSON.stringify({"start": $('#start_date').val(), "end": $('#end_date').val()}),
+                success: function (result) {
+                    alert("提交成功" + result);
+                },
+                error: function () {
+                    alert("异常!!!");
+                }
+            })
         });
-        //动态设置最大值
-        picker2.on('dp.change', function (e) {
-            picker1.data('DateTimePicker').maxDate(e.date);
-        });
-    });
-
-    $('#datetimepicker1').datetimepicker({
-        format: 'YYYY-MM-DD',
-        locale: moment.locale('zh-cn')
-        //defaultDate: "2020-1-1",
-        //todayHighlight:true
-    });
-
-    $('#datetimepicker2').datetimepicker({
-        format: 'YYYY-MM-DD',
-        locale: moment.locale('zh-cn')
-        //defaultDate: "2020-12-1",
-        //todayHighlight:true
-    });
-
-    $('#button1').click(function () {
-
-        //alert("已经提交" + $('#start_date').val() + $('#end_date').val());
-        $.ajax({
-            url: " http://127.0.0.1:5000/date_check",
-            type: "post",
-            dataType: "json",
-            data: JSON.stringify({"start": $('#start_date').val(), "end": $('#end_date').val()}),
-            success: function (result) {
-                    alert("提交成功"+result);
-            },
-            error: function () {
-                alert("异常!!!");
-            }
-        })
-    });
 
 
-</script>
-</body>
-
-
-</html>
+    </script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect, jsonify
+from flask import Flask, render_template, request, url_for, redirect, jsonify, make_response
 import json
 
 app = Flask(__name__)
@@ -52,7 +52,17 @@ def date_check():
     """
     data = json.loads(request.get_data(as_text=True))
     print(data)
-    return jsonify({'code': 200, 'message': ''})
+    print(request.headers)
+    response = make_response(jsonify({'code': 200, 'message': ''}))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+
+    return response
+
+
+@app.route('/calendar', methods=['GET'])
+def calendar():
+    return render_template("calendar.html")
+
     # return data['test']
     # password = request.args['password']
     # print(username, password)
