@@ -6,10 +6,10 @@ from flask import Flask, render_template, request, url_for, redirect, jsonify, m
 import json
 from datetime import timedelta
 
-from export import *
+from calculation import *
 
 app = Flask(__name__)
-app.register_blueprint(export)
+app.register_blueprint(calculation)
 
 app.config['DEBUG'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
