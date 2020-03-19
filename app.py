@@ -1,7 +1,18 @@
+from obtain_order.assistence import generate_order_xlsx, calculate_register_number_now
+from obtain_order.order_analyze import count_each_schedule_number
+
 from flask import Flask, render_template, request, url_for, redirect, jsonify, make_response
+
 import json
+from datetime import timedelta
+
+from export import *
 
 app = Flask(__name__)
+app.register_blueprint(export)
+
+app.config['DEBUG'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
 
 
 @app.route('/')
@@ -43,29 +54,32 @@ def logout():
     return render_template("school_bus.html")
 
 
-@app.route('/date_check', methods=['POST'])
-def date_check():
+@app.route('/calendar', methods=['GET'])
+def calendar():
     """
     bootstrap的时间选择器
     https://www.bootcss.com/p/bootstrap-datetimepicker/
     :return:
     """
+    return render_template("calendar.html")
+
+
+@app.route('/obtain_order', methods=['POST'])
+def obtain_order():
     data = json.loads(request.get_data())
     print(data)
 
-    # TODO 提取数据出来
+    # 提取数据类型
     passager_type = data['passager_type']
-
-    # 传入乘客类型 string 类型
-    passager_type = "{} {}".format(passager_type.upper(), passager_type.lower())
-    print(passager_type)  # 大小写均可
-
     # 传入日期 int 类型
     start_date = int(data['start'].replace("-", ""))
     end_date = int(data['end'].replace('-', ""))
-    print(start_date, end_date)
 
-    # TODO 返回导出文件
+    # TODO 执行导出excel订单文件
+    calculate_register_number_now(passager_type)
+    generate_order_xlsx(passager_type, start_date, end_date)
+
+    count_each_schedule_number("各站点购票情况", ["站点", "人数", "名单"])
     response = make_response(jsonify({'code': 200, 'message': ''}))
     response.headers['Access-Control-Allow-Origin'] = '*'
     # 保证了跨域不出错
@@ -73,16 +87,10 @@ def date_check():
     return response
 
 
-@app.route('/calendar', methods=['GET'])
-def calendar():
-    return render_template("calendar.html")
-
-    # return data['test']
-    # password = request.args['password']
-    # print(username, password)
-    # return 201
-    # return render_template("index.html")
+@app.route('/statistics', methods=['GET'])
+def station_number_calculation():
+    return render_template("export_page.html")
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

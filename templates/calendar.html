@@ -78,17 +78,16 @@
                             </div>
 
                             <div class="card-body">
-                                    请选择导出乘车类型
+                                请选择导出乘车类型
                                 <div class="form-group ">
 
                                     <div class="myrow">
                                         <input id='passager_type' type='text' class="timeInput form-control"
-                                               placeholder="例如: 0A"/>
+                                               required="required" placeholder="例如: 0A"/>
                                     </div>
                                     <br>
                                     <br>
                                     请选择时间段
-
                                     <div class="myrow">
                                         <div class='input-group date' style="width: 14em;" id='datetimepicker1'>
                                             <input id='start_date' type='text' class="timeInput form-control"/>
@@ -212,8 +211,12 @@
         $('#button1').click(function () {
 
             //alert("已经提交" + $('#start_date').val() + $('#end_date').val());
-            $.ajax({
-                url: " http://127.0.0.1:5000/date_check",
+            if ($('#passager_type').val().length == 0) {
+                alert("输入乘客类型");
+            }
+            else{
+                            $.ajax({
+                url: " http://127.0.0.1:5000/obtain_order",
                 type: "post",
                 dataType: "json",
                 data: JSON.stringify({
@@ -229,6 +232,8 @@
                     alert("异常!!!");
                 }
             })
+            }
+
         });
 
 
