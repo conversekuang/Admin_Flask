@@ -19,7 +19,7 @@ from obtain_order.assistence import writefile, convert_csv_xls
 
 def count_buyer_in_grade():
     print("统计各年级买票数量")
-    df = pd.read_excel("order.xlsx")
+    df = pd.read_excel("账单的-order.xlsx")
     dic = {}
     total = 0
 
@@ -41,7 +41,7 @@ def count_buyer_in_grade():
 
 def count_buyer_in_type():
     print("统计购买乘车类型")
-    df = pd.read_excel("order.xlsx")
+    df = pd.read_excel("账单的-order.xlsx")
     dic = {}
     total = 0
 
@@ -73,7 +73,7 @@ def count_each_route_number():
     :return:
     """
     print("统计线路人数")
-    df = pd.read_excel("order.xlsx")
+    df = pd.read_excel(r"F:\Python_project\IDE\Institude\download\order.xlsx")
     dic = {}
     total = 0
     for index, item in df.iterrows():
@@ -84,6 +84,7 @@ def count_each_route_number():
 
     for key, val in sorted(dic.items(), key=lambda d: d[1], reverse=True):
         print(key, val)
+    print(sum(dic.values()))
 
 
 def count_each_schedule_number1():
@@ -92,7 +93,7 @@ def count_each_schedule_number1():
     :return:
     """
     print("统计班次总人数")
-    df = pd.read_excel("order.xlsx")
+    df = pd.read_excel("账单的-order.xlsx")
     dic = {}
     total = 0
     for index, item in df.iterrows():
@@ -115,83 +116,129 @@ def count_each_schedule_number(filename, fieldnames):
     """
     db = DB("busline")
 
-    TimeTable = {
-        "JN1": "21:00:00",
-        "JN2": "21:30:00",
-        "JF1": "15:25:00",
-        "JF2": "16:15:00",
-        "JF3": "17:05:00",
-        "JS1": "10:20:00",
-        "JS2": "15:25:00",
-        "SN2": "21:30:00",
-        "SS1": "10:20:00"
-
-    }
+    # TimeTable = {
+    #     "JN1": "21:00:00",
+    #     "JN2": "21:30:00",
+    #     "JF1": "15:25:00",
+    #     "JF2": "16:15:00",
+    #     "JF3": "17:05:00",
+    #     "JS1": "10:20:00",
+    #     "JS2": "15:25:00",
+    #     "SN2": "21:30:00",
+    #     "SS1": "10:20:00"
+    #
+    # }
 
     print("统计班次总人数")
     line_number_dict = {}
     df = pd.read_excel(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "order.xlsx"))
     dic = {}
+    names_dic = {}
     total = 0
     for index, item in df.iterrows():
-        if item['scheduledName'] in dic.keys():
-            if item['dropOffCode'] in dic[item['scheduledName']].keys():
-                dic[item['scheduledName']][item['dropOffCode']] += 1
+        if item['lineName'] in dic.keys():
+            if 'go' in item['lineName']:
+                # boardingCode
+                if item['boardingCode'] in dic[item['lineName']].keys():
+                    dic[item['lineName']][item['boardingCode']] += 1
+                    names_dic[item['lineName']][item['boardingCode']].append(item['memberName'])
+                else:
+                    dic[item['lineName']][item['boardingCode']] = 1
+                    names_dic[item['lineName']][item['boardingCode']] = [item['memberName']]
             else:
-                dic[item['scheduledName']][item['dropOffCode']] = 1
+                # dropOffCode
+
+                if item['dropOffCode'] in dic[item['lineName']].keys():
+                    dic[item['lineName']][item['dropOffCode']] += 1
+                    names_dic[item['lineName']][item['dropOffCode']].append(item['memberName'])
+                else:
+                    dic[item['lineName']][item['dropOffCode']] = 1
+                    names_dic[item['lineName']][item['dropOffCode']] = [item['memberName']]
         else:
-            dic[item['scheduledName']] = {}
-            dic[item['scheduledName']][item['dropOffCode']] = 1
+            dic[item['lineName']] = {}
+            names_dic[item['lineName']] = {}
+
+            if 'go' in item['lineName']:
+                dic[item['lineName']][item['boardingCode']] = 1
+                names_dic[item['lineName']][item['boardingCode']] = [item['memberName']]
+            else:
+                dic[item['lineName']][item['dropOffCode']] = 1
+                names_dic[item['lineName']][item['dropOffCode']] = [item['memberName']]
 
     total = 0
-    for busno in range(51, 80):  # 修改辅号码
-        db.execute_sql("SELECT lineName FROM yzbusline WHERE busNumber ='{}'".format("辅" + str(busno)))
-        lineName = db.get_one()
+    print(dic)
+    print(names_dic)
+    json.dump(dic, open("人数.json", 'w'))
+    json.dump(names_dic, open("人名称.json", 'w'))
+
+    # for busno in range(51, 80):  # 修改辅号码
+    #     db.execute_sql("SELECT lineName FROM ins36_busline WHERE busNumber ='{}'".format("辅" + str(busno)))
+    #     lineName = db.get_one()
+
+    db.execute_sql("SELECT lineName FROM ins36_busline")
+    for lineNames in db.cursor.fetchall():
+        lineName = lineNames[0]
+
         for key, val in dic.items():
-            if lineName == key[:-2]:
+            if lineName == key:
                 sum_ = 0
                 #  FINISHED    线路按站点顺序依次打印出各站点人数
                 db.execute_sql(
-                    "SELECT stopsNames, grade, endStopName, lineTypeDesc, busNumber FROM yzbusline WHERE lineName ='{}'".format(
-                        key[:-2]))
+                    "SELECT stopsNames, grade, endStopName, lineType, busNumber,startStopName FROM ins36_busline WHERE lineName ='{}'".format(
+                        key))
                 line_info = db.get_all()
-                # print(line_info)
+                # print("lineinfo---------", line_info)
                 if line_info:
                     stops_arr = line_info[0][0].split(",")
                     # grade = line_info[0][1]
                     endstop = line_info[0][2]
-                    lineType = line_info[0][3]
-                    busNumber = line_info[0][4]
-                    startTime = TimeTable[key[3:6]]
+                    if int(line_info[0][3]) == 1:
+                        lineType = "上班"
+                        startTime = "07:20:00"
+                    else:
+                        lineType = "下班"
+                        startTime = "17:05:00"
+
+                    if line_info[0][4] is None:
+                        busNumber = ""
+                    else:
+                        busNumber = line_info[0][4]
+
+                    # busNumber = line_info[0][4]
+                    startstop = line_info[0][5]
+
+                    # startTime = ""   TimeTable[key[3:6]]
                     print("{}  {}{}".format(busNumber, lineType, startTime))
                     writefile(filename, fieldnames,
-                              {fieldnames[0]: "{} {} {}".format(busNumber, lineType, startTime), fieldnames[1]: ""})
+                              {fieldnames[0]: "{} {} {} {}->{}".format(busNumber, lineType, startTime, startstop,
+                                                                       endstop), fieldnames[1]: "", fieldnames[2]: ""})
                     for stop in stops_arr:
                         if stop in val.keys():
-                            if stop != "嘉兴一中实验学校":
+                            if stop not in ("中电科技三十六所", "36所智慧园"):
                                 print("{}\t{}".format(stop, val[stop]))
                                 writefile(filename, fieldnames,
-                                          {fieldnames[0]: stop, fieldnames[1]: "{}".format(val[stop])})
+                                          {fieldnames[0]: stop, fieldnames[1]: "{}".format(val[stop]),
+                                           fieldnames[2]: ",".join(names_dic[lineName][stop])})
                                 sum_ += val[stop]
                         else:
-                            if stop != "嘉兴一中实验学校":
+                            if stop not in ("中电科技三十六所", "36所智慧园"):
                                 print("{}\t{}".format(stop, 0))
                                 writefile(filename, fieldnames,
-                                          {fieldnames[0]: stop, fieldnames[1]: "{}".format(0)})
+                                          {fieldnames[0]: stop, fieldnames[1]: "{}".format(0), fieldnames[2]: ""})
                     print('线路总人数是\t%d\n' % sum_)
                     writefile(filename, fieldnames,
                               {fieldnames[0]: "线路总人数是", fieldnames[1]: sum_})
                     writefile(filename, fieldnames,
-                              {fieldnames[0]: "", fieldnames[1]: ""})
+                              {fieldnames[0]: "", fieldnames[1]: "", fieldnames[2]: ""})
                     line_number_dict[busNumber] = sum_
                     total += sum_
                     break
     print(total)
     writefile(filename, fieldnames,
               {fieldnames[0]: "总人数", fieldnames[1]: total})
-    # json.dump(line_number_dict,
-    #           open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "people_number.json"), "w"))
-    # convert_csv_xls(filename)
+    json.dump(line_number_dict,
+              open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "people_number.json"), "w"))
+    convert_csv_xls(filename)
 
 
 def count_type_in_grade():
@@ -227,7 +274,7 @@ def count_type_in_grade():
 
     name_dict = {}
 
-    df = pd.read_excel("order.xlsx")
+    df = pd.read_excel("账单的-order.xlsx")
     for index, row in df.iterrows():
         # 九年级
         if row["Account"][2:4] == '17':
@@ -345,7 +392,7 @@ def generate_files_for_school():
     # 目标文件夹
     target_dir = os.path.join(basedir, '各年级乘车情况')
 
-    df = pd.read_excel(os.path.join(basedir, "order.xlsx"))
+    df = pd.read_excel(os.path.join(basedir, "账单的-order.xlsx"))
 
     grade_classes_dict = {"17": {}, "18": {}, "19": {}, "20": {}, "21": {}, "22": {}}
     for index, row in df.iterrows():
@@ -420,7 +467,7 @@ def generate_files_for_school():
 
 def generate_files_for_bus_company():
     db = DB("busline")
-    db.execute_sql("SELECT lineName, busNumber,lineTypeDesc, stopsNames FROM yzbusline")
+    db.execute_sql("SELECT lineName, busNumber,lineTypeDesc, stopsNames FROM ins36_busline WHERE busNumber is not null")
     bus_info = dict()
 
     for each in db.get_all():
@@ -436,28 +483,27 @@ def generate_files_for_bus_company():
     if not os.path.exists(base_dir):
         os.mkdir(base_dir)
 
-    df = pd.read_excel(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "order.xlsx"))
-    dict_category = {"19": "初1 ", "18": "初2 ", "17": "初3 ", "20": "高3 ", "21": "高2 ", "22": "高1 "}
+    df = pd.read_excel(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "账单的-order.xlsx"))
+
     for lineName in bus_info.keys():
         passagers_arr = []
         for index, row in df.iterrows():
             if lineName == row['lineName']:
-                if len(row['Account']) == 8:
-                    grade_class = "{}({})".format(dict_category[row['Account'][2:4]], row['Account'][4:6])
+
+                if 'go' in lineName:
+                    order_station_ = row['boardingCode']
                 else:
-                    grade_class = "{}({})".format(dict_category[row['Account'][2:4]], row['Account'][4:5])
-                if row['Account'] == "0A171202":
-                    row['Account'] = "0A181202"
+                    order_station_ = row['dropOffCode']
+
                 new_row = pd.DataFrame({"学号": row['Account'],
                                         "姓名": row['memberName'],
-                                        "年级": grade_class,
                                         "车号": bus_info[row['lineName']]["num"],
                                         "时间段": bus_info[row['lineName']]["period"],
                                         "发车时间": row['startTime'],
-                                        "下车点": row['dropOffCode'],
+                                        "下车点": order_station_,
                                         "电话": row['teleNum'],
                                         "备注": ""
-                                        }, columns=["学号", "年级", "姓名", "时间段", "车号", "发车时间", "下车点", "电话", "备注"],
+                                        }, columns=["学号", "姓名", "时间段", "车号", "发车时间", "下车点", "电话", "备注"],
                                        index=[index])
                 passagers_arr.append(new_row)
 
@@ -471,21 +517,23 @@ def generate_files_for_bus_company():
                     if stop == row["下车点"]:
                         sorted_passagers_arr.append(passager)
 
+        print(sorted_passagers_arr)
         dfs = pd.concat(sorted_passagers_arr, ignore_index=True, axis=0)
         # print(dfs)
         dfs.index = range(1, len(dfs) + 1)
-        pd.DataFrame(dfs).to_excel(os.path.join(base_dir, bus_info[lineName]["num"] + ".xlsx"))
+        if bus_info[lineName]["num"] is not None:
+            pd.DataFrame(dfs).to_excel(os.path.join(base_dir, bus_info[lineName]["num"] + lineName + ".xlsx"))
 
 
 if __name__ == '__main__':
     # count_type_in_grade()
-    generate_files_for_school()
+    # generate_files_for_school()
     generate_files_for_bus_company()
 
     # count_buyer_in_grade()
     # count_buyer_in_type()
     # count_each_route_number()
 
-    count_each_schedule_number("total", ["站点", "人数"])
+    # count_each_schedule_number("各站点购票情况", ["站点", "人数", "名单"])
 
     # count_each_schedule_number1()

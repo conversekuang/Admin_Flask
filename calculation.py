@@ -25,8 +25,8 @@ def refund_order():
     # TODO 导出退款订单
 
 
-@calculation.route('/station_calculation')
-def station_calculation():
-    return "station_calculation"
-    # TODO 站点人数计算
+# @calculation.route('/station_calculation')
+# def station_calculation():
+#     return "station_calculation"
+#     # TODO 站点人数计算
 

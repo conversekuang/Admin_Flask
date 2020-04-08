@@ -56,8 +56,8 @@
                                         <tr>
                                             <td>从系统后台更新到本地数据库</td>
                                             <td>
-                                                <form action="{{ url_for('export.paid_order') }}" method='GET'>
-                                                    <input type="submit" value="已支付订单" class="btn btn-primary"
+                                                <form action="{{ url_for('update_info') }}" method='POST'>
+                                                    <input type="submit" value="更新后台数据" class="btn btn-primary"
                                                            style="margin-top:15px;"/>
                                                 </form>
                                             </td>

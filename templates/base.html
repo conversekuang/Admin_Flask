@@ -262,7 +262,6 @@
                         </li>
 
 
-
                         <li class="submenu">
                             <a href="#"><i class="fa fa-fw fa-tv"></i> <span> 更新后台信息 </span> <span
                                     class="menu-arrow"></span></a>
@@ -280,61 +279,63 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="{{ url_for("school_bus") }}"><i
-                                    class="fa fa-fw fa-area-chart"></i><span> 校园线 </span>
-                            </a>
+                            <a href="#"><i class="fa fa-fw fa-table"></i> <span> 校园线 </span> <span
+                                    class="menu-arrow"></span></a>
+                            <ul class="list-unstyled">
+                                <li><a href="{{ url_for("school_bus") }}">学校</a></li>
+                            </ul>
                         </li>
 
                         <li class="submenu">
                             <a href="#"><i class="fa fa-fw fa-table"></i> <span> 通勤线 </span> <span
                                     class="menu-arrow"></span></a>
                             <ul class="list-unstyled">
-                                <li><a href="{{ url_for("commute_bus") }}">Basic Tables</a></li>
-                                <li><a href="{{ url_for("commute_bus") }}">Data Tables</a></li>
+                                <li><a href="{{ url_for("commute_bus") }}">通勤</a></li>
+                                {#                                <li><a href="{{ url_for("commute_bus") }}">Data Tables</a></li>#}
                             </ul>
                         </li>
-{#                        <li class="submenu">#}
-{#                            <a href="#"><i class="fa fa-fw fa-file-text-o"></i> <span> 列表 </span> <span#}
-{#                                    class="menu-arrow"></span></a>#}
-{#                            <ul class="list-unstyled">#}
-{#                                <li><a href="forms-general.html">General Elements</a></li>#}
-{#                                <li><a href="forms-select2.html">Select2</a></li>#}
-{#                                <li><a href="forms-validation.html">Form Validation</a></li>#}
-{#                                <li><a href="forms-text-editor.html">Text Editors</a></li>#}
-{#                                <li><a href="forms-upload.html">Multiple File Upload</a></li>#}
-{#                                <li><a href="forms-datetime-picker.html">Date and Time Picker</a></li>#}
-{#                                <li><a href="forms-color-picker.html">Color Picker</a></li>#}
-{#                            </ul>#}
-{#                        </li>#}
+                        {#                        <li class="submenu">#}
+                        {#                            <a href="#"><i class="fa fa-fw fa-file-text-o"></i> <span> 列表 </span> <span#}
+                        {#                                    class="menu-arrow"></span></a>#}
+                        {#                            <ul class="list-unstyled">#}
+                        {#                                <li><a href="forms-general.html">General Elements</a></li>#}
+                        {#                                <li><a href="forms-select2.html">Select2</a></li>#}
+                        {#                                <li><a href="forms-validation.html">Form Validation</a></li>#}
+                        {#                                <li><a href="forms-text-editor.html">Text Editors</a></li>#}
+                        {#                                <li><a href="forms-upload.html">Multiple File Upload</a></li>#}
+                        {#                                <li><a href="forms-datetime-picker.html">Date and Time Picker</a></li>#}
+                        {#                                <li><a href="forms-color-picker.html">Color Picker</a></li>#}
+                        {#                            </ul>#}
+                        {#                        </li>#}
 
-{#                        <li class="submenu">#}
-{#                            <a href="#"><i class="fa fa-fw fa-th"></i> <span> 其他信息 </span> <span#}
-{#                                    class="menu-arrow"></span></a>#}
-{#                            <ul class="list-unstyled">#}
-{#                                <li><a href="star-rating.html">Star Rating</a></li>#}
-{#                                <li><a href="range-sliders.html">Range Sliders</a></li>#}
-{#                                <li><a href="tree-view.html">Tree View</a></li>#}
-{#                                <li><a href="sweetalert.html">SweetAlert</a></li>#}
-{#                                <li><a href="calendar.html">Calendar</a></li>#}
-{#                                <li><a href="gmaps.html">GMaps</a></li>#}
-{#                                <li><a href="counter-up.html">Counter-Up</a></li>#}
-{#                            </ul>#}
-{#                        </li>#}
+                        {#                        <li class="submenu">#}
+                        {#                            <a href="#"><i class="fa fa-fw fa-th"></i> <span> 其他信息 </span> <span#}
+                        {#                                    class="menu-arrow"></span></a>#}
+                        {#                            <ul class="list-unstyled">#}
+                        {#                                <li><a href="star-rating.html">Star Rating</a></li>#}
+                        {#                                <li><a href="range-sliders.html">Range Sliders</a></li>#}
+                        {#                                <li><a href="tree-view.html">Tree View</a></li>#}
+                        {#                                <li><a href="sweetalert.html">SweetAlert</a></li>#}
+                        {#                                <li><a href="calendar.html">Calendar</a></li>#}
+                        {#                                <li><a href="gmaps.html">GMaps</a></li>#}
+                        {#                                <li><a href="counter-up.html">Counter-Up</a></li>#}
+                        {#                            </ul>#}
+                        {#                        </li>#}
 
-{#                        <li class="submenu">#}
-{#                            <a href="#"><i class="fa fa-fw fa-image"></i> <span> 更新线路信息 </span> <span#}
-{#                                    class="menu-arrow"></span></a>#}
-{#                            <ul class="list-unstyled">#}
-{#                                <li><a href="media-fancybox.html"><span#}
-{#                                        class="label radius-circle bg-danger float-right">cool</span>#}
-{#                                    Fancybox </a></li>#}
-{#                                <li><a href="media-masonry.html">Masonry</a></li>#}
-{#                                <li><a href="media-lightbox.html">Lightbox</a></li>#}
-{#                                <li><a href="media-owl-carousel.html">Owl Carousel</a></li>#}
-{#                                <li><a href="media-image-magnifier.html">Image Magnifier</a></li>#}
-{##}
-{#                            </ul>#}
-{#                        </li>#}
+                        {#                        <li class="submenu">#}
+                        {#                            <a href="#"><i class="fa fa-fw fa-image"></i> <span> 更新线路信息 </span> <span#}
+                        {#                                    class="menu-arrow"></span></a>#}
+                        {#                            <ul class="list-unstyled">#}
+                        {#                                <li><a href="media-fancybox.html"><span#}
+                        {#                                        class="label radius-circle bg-danger float-right">cool</span>#}
+                        {#                                    Fancybox </a></li>#}
+                        {#                                <li><a href="media-masonry.html">Masonry</a></li>#}
+                        {#                                <li><a href="media-lightbox.html">Lightbox</a></li>#}
+                        {#                                <li><a href="media-owl-carousel.html">Owl Carousel</a></li>#}
+                        {#                                <li><a href="media-image-magnifier.html">Image Magnifier</a></li>#}
+                        {##}
+                        {#                            </ul>#}
+                        {#                        </li>#}
 
                         {##}
                         {#                        <li class="submenu">#}

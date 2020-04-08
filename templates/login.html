@@ -17,21 +17,35 @@
 <form class="form-signin" action="{{ url_for('login') }}" method="post">
     <img class="mb-4" src="{{ url_for("static",filename="assets/images/bootstrap-solid.svg") }}" alt=""
          width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <h1 class="h3 mb-3 font-weight-normal">请输入验证码</h1>
     <!--判断-->
+    <div class="row m-t">
 
-    <label class="sr-only">Username</label>
-    <input type="text" name="username" class="form-control" placeholder="Username"
-           required="" autofocus="">
-    <label class="sr-only">Password</label>
-    <input type="password" name="password" class="form-control" placeholder="Password"
-           required="">
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"/> Remember Me
-        </label>
+        <div class="col-xs-6">
+            <a href="javascript:void(0);" title="点击更换验证码">
+                <img src="{{ url_for('static',filename='validateCode.jpeg') }}" class="imgcode" width="100%"/>
+            </a>
+        </div>
+
+        <form action="{{ url_for('login') }}" enctype='multipart/form-data' method='POST'>
+            <input type="text" name="validateCode" class="form-control code" placeholder="验证码" maxlength="5"
+                   autocomplete="off">
+            <input type="submit" value="登录" class="button-new" style="margin-top:15px;"/>
+        </form>
+
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    {#    <label class="sr-only">Username</label>#}
+    {#    <input type="text" name="username" class="form-control" placeholder="Username"#}
+    {#           required="" autofocus="">#}
+    {#    <label class="sr-only">Password</label>#}
+    {#    <input type="password" name="password" class="form-control" placeholder="Password"#}
+    {#           required="">#}
+    {#    <div class="checkbox mb-3">#}
+    {#        <label>#}
+    {#            <input type="checkbox" value="remember-me"/> Remember Me#}
+    {#        </label>#}
+    {#    </div>#}
+    {#    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>#}
     <p class="mt-5 mb-3 text-muted">© 2020-2021</p>
 </form>
 </body>
