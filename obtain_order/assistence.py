@@ -171,6 +171,16 @@ def generate_order_xlsx(passager_type, minDate, maxDate):
     """
     global totoal_already_paid_num
 
+    # 如果有存在的文件，直接删除之前的。
+    if os.path.exists(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "order.csv")):
+        os.remove(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "order.csv"))
+    if os.path.exists(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "refund_order.csv")):
+        os.remove(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "refund_order.csv"))
+    if os.path.exists(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "order.xlsx")):
+        os.remove(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "order.xlsx"))
+    if os.path.exists(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "refund_order.xlsx")):
+        os.remove(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'download', "refund_order.xlsx"))
+
     pagesize = 200
     pagenum = 1
     result_dic = download_order(pagesize, pagenum)
@@ -298,8 +308,8 @@ if __name__ == '__main__':
     generate_order_xlsx(passager_type, minDate, maxDate)
     # convert_csv_xls("order")
     # convert_csv_xls("refund_order")
-# all_register_dic = get_register_result_dict()
-# for key in all_register_dic.keys():
-# 	print key, type(key)
-# 	print all_register_dic[key][0], type(all_register_dic[key][0])
-# 	print all_register_dic[key][1], type(all_register_dic[key][1])
+    # all_register_dic = get_register_result_dict()
+    # for key in all_register_dic.keys():
+    # 	print key, type(key)
+    # 	print all_register_dic[key][0], type(all_register_dic[key][0])
+    # 	print all_register_dic[key][1], type(all_register_dic[key][1])

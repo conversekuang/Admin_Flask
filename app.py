@@ -1,12 +1,12 @@
 from obtain_order.assistence import generate_order_xlsx, calculate_register_number_now
-from obtain_order.order_analyze_for_commute import count_each_schedule_number
+
 from common.imitate_login import validate_cookie, obtain_image, obtain_cookie, check_login
 
-from flask import Flask, render_template, request, url_for, redirect, jsonify, make_response
+from flask import Flask, render_template, request, url_for, redirect, jsonify, make_response, session
 
 import json
 from datetime import timedelta
-
+import common
 from calculation import *
 from school import *
 from commute import *
@@ -18,11 +18,30 @@ app.register_blueprint(commute)
 
 app.config['DEBUG'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
+app.config['SECRET_KEY'] = "12587asiwbqwp"
+
+
+@app.before_request
+def before_request():
+    if request.path == '/login':
+        # print("登录login")
+        return None
+    if request.path.startswith("/static"):
+        # print("静态资源不拦截")
+        return None
+    if not request.cookies.get("jid"):
+        return redirect('/login')
+
+    # 恢复session
+    if request.cookies.get("jid"):
+        common.download.COOKIES['JSESSIONID'] = request.cookies.get("jid")
+    print("有session")
+    return None
 
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template('index.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -33,8 +52,13 @@ def login():
         # print("后台收到的验证码：{}".format(code))
         # print("发送验证码的", COOKIES)
         if validate_cookie(code):
-            return redirect(url_for('index'))
+            # success
+            temp = render_template('index.html')
+            res = make_response(temp)
+            res.set_cookie('jid', common.download.COOKIES["JSESSIONID"], max_age=600)
+            return res
         else:
+            # fail
             return redirect(url_for('login'))
     else:
         obtain_cookie()
@@ -62,7 +86,10 @@ def update_info():
 
 @app.route('/logout', methods=['GET'])
 def logout():
-    return render_template("school_bus.html")
+    temp = render_template("login.html")
+    res = make_response(temp)
+    res.delete_cookie('jid')
+    return res
 
 
 @app.route('/calendar', methods=['GET'])
@@ -99,9 +126,9 @@ def obtain_order():
 
 
 @app.route('/statistics', methods=['GET'])
-def station_number_calculation():
+def statistics():
     return render_template("export_page.html")
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

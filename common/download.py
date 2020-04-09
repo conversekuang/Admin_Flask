@@ -28,7 +28,7 @@ GET_HEADERS = {
 }
 
 COOKIES = {
-    "JSESSIONID": "ecfc9614-f5c0-44ac-9214-9396b35b9af1"
+    "JSESSIONID": None
 }
 
 

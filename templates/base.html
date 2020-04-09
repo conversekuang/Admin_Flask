@@ -221,7 +221,7 @@
                             </a>
 
                             <!-- item-->
-                            <a href="#" class="dropdown-item notify-item">
+                            <a href="{{ url_for('logout') }}" class="dropdown-item notify-item">
                                 <i class="fa fa-power-off"></i> <span>Logout</span>
                             </a>
 
@@ -274,8 +274,8 @@
                             <a href="#"><i class="fa fa-fw fa-tv"></i> <span> 导出订单 </span> <span
                                     class="menu-arrow"></span></a>
                             <ul class="list-unstyled">
-                                <li><a href="{{ url_for("calendar") }}"> 导出操作 </a></li>
-                                <li><a href="{{ url_for("station_number_calculation") }}"> 统计导出 </a></li>
+                                <li><a href="{{ url_for("calendar") }}"> 获取订单 </a></li>
+                                <li><a href="{{ url_for("statistics") }}"> 统计导出 </a></li>
                             </ul>
                         </li>
                         <li class="submenu">
